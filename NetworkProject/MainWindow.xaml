@@ -4,10 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NetworkProject"
+        xmlns:VM="clr-namespace:NetworkProject.ViewModel"
         xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
         xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
         mc:Ignorable="d"
         Title="MainWindow" Height="900" Width="1600" ResizeMode="NoResize">
+    <Window.DataContext>
+        <VM:MainViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -15,7 +19,7 @@
         </Grid.RowDefinitions>
         <ToolBar Grid.Row="0">
             <Button Content="Exit"/>
-            <Button Content="Capture"/>
+            <Button Content="Capture" Command="{Binding CaptureCommand}"/>
         </ToolBar>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
