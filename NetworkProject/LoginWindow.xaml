@@ -25,11 +25,11 @@
     <StackPanel>
         <ToggleButton Padding="10" Style="{DynamicResource {x:Static adonisUi:Styles.ToggleSwitch}}"
                       HorizontalAlignment="Right" Name="ProgramMode"
-                      IsChecked="{Binding ProgramMode}">
+                      IsChecked="{Binding ServerMode}">
             서버 모드
         </ToggleButton>
         <GroupBox Padding="10"
-                  Visibility="{Binding ProgramMode, Converter={StaticResource InvertBoolToVisibilty}}">
+                  Visibility="{Binding ServerMode, Converter={StaticResource InvertBoolToVisibilty}}">
             <GroupBox.Header>
                 <Label>Client</Label>
             </GroupBox.Header>
@@ -41,7 +41,7 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Padding="10"
-                  Visibility="{Binding ProgramMode, Converter={StaticResource BoolToVisibility}}">
+                  Visibility="{Binding ServerMode, Converter={StaticResource BoolToVisibility}}">
             <GroupBox.Header>
                 <Label>Server</Label>
             </GroupBox.Header>

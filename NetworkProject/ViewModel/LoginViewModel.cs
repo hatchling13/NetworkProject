@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace NetworkProject.ViewModel
 {
@@ -10,19 +11,28 @@ namespace NetworkProject.ViewModel
     {
         public LoginViewModel()
         {
-            ProgramMode = false;
+            ServerMode = false;
         }
-        
-        private bool programMode;
 
-        public bool ProgramMode
+        private bool serverMode;
+
+        public bool ServerMode
         {
-            get => programMode;
+            get => serverMode;
             set
             {
-                programMode = value;
-                OnPropertyChanged("ProgramMode");
+                serverMode = value;
+                OnPropertyChanged("ServerMode");
             }
+        }
+
+        private ICommand startCommand;
+        public ICommand StartCommand => startCommand ??= new DelegateCommand(Start);
+
+        private void Start()
+        {
+            // if (serverMode) server Start
+            // else client Start
         }
     }
 }
