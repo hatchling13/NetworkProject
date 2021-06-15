@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AdonisUI.Controls;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,15 +10,25 @@ using System.Windows.Input;
 
 namespace NetworkProject.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ObservableRecipient
     {
-        private ICommand captureCommand;
-        public ICommand CaptureCommand => captureCommand ??= new DelegateCommand(Capture);
+        public MainViewModel()
+        {
+            CaptureCommand = new RelayCommand(Capture);
+            CloseCommand = new RelayCommand<AdonisWindow>(Close);
+        }
 
-        private void Capture()
+        public ICommand CaptureCommand { get; set; }
+        private void Capture(object o)
         {
             CaptureDialog dialog = new();
-            _ = dialog.ShowDialog();
+            dialog.ShowDialog();
+        }
+
+        public ICommand CloseCommand { get; set; }
+        private void Close(AdonisWindow current)
+        {
+            current.Close();
         }
     }
 }

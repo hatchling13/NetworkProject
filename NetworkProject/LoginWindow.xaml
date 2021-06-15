@@ -4,16 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NetworkProject"
-        xmlns:VM="clr-namespace:NetworkProject.ViewModel"
+        xmlns:vm="clr-namespace:NetworkProject.ViewModel"
         xmlns:helper="clr-namespace:NetworkProject.Helper"
         xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
         xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
         mc:Ignorable="d"
+        x:Name="Login"
         IconVisibility="Collapsed"
         ShrinkTitleBarWhenMaximized="False"
         Title="Login" Width="450" SizeToContent="Height" ResizeMode="CanMinimize">
     <Window.DataContext>
-        <VM:LoginViewModel/>
+        <vm:LoginViewModel/>
     </Window.DataContext>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
@@ -35,9 +36,11 @@
             </GroupBox.Header>
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Text="ID" Padding="10"/>
-                <TextBox Padding="10"/>
+                <TextBox Padding="10" Text="{Binding UserName, Mode=OneWayToSource}"/>
                 <TextBlock Text="IP Address" Padding="10"/>
-                <TextBox Padding="10"/>
+                <TextBox Padding="10" Text="{Binding Address, Mode=OneWayToSource}"/>
+                <TextBlock Text="Port" Padding="10"/>
+                <TextBox Padding="10" Text="{Binding SendPort, Mode=OneWayToSource}"/>
             </StackPanel>
         </GroupBox>
         <GroupBox Padding="10"
@@ -47,9 +50,10 @@
             </GroupBox.Header>
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Text="Port" Padding="10"/>
-                <TextBox Padding="10"/>
+                <TextBox Padding="10" Text="{Binding RecvPort, Mode=OneWayToSource}"/>
             </StackPanel>
         </GroupBox>
-        <Button Content="Start" Padding="10"/>
+        <Button Content="Start" Padding="10"
+                Command="{Binding StartCommand}" CommandParameter="{Binding ElementName=Login}"/>
     </StackPanel>
 </adonisControls:AdonisWindow>

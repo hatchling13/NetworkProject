@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.0" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.0.2" />
   </ItemGroup>
 
 </Project>

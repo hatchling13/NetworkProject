@@ -1,38 +1,98 @@
-﻿using System;
+﻿using AdonisUI.Controls;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using NetworkProject.Model;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace NetworkProject.ViewModel
 {
-    public class LoginViewModel : ViewModelBase
+    public class LoginViewModel : ObservableRecipient
     {
+        private Server server;
+        private Client client;
+
         public LoginViewModel()
         {
-            ServerMode = false;
+            StartCommand = new RelayCommand<AdonisWindow>(Start);
         }
 
         private bool serverMode;
-
         public bool ServerMode
         {
             get => serverMode;
-            set
-            {
-                serverMode = value;
-                OnPropertyChanged("ServerMode");
-            }
+            set => SetProperty(ref serverMode, value);
         }
 
-        private ICommand startCommand;
-        public ICommand StartCommand => startCommand ??= new DelegateCommand(Start);
-
-        private void Start()
+        private string userName;
+        public string UserName
         {
-            // if (serverMode) server Start
-            // else client Start
+            get => userName;
+            set => SetProperty(ref userName, value);
+        }
+
+        private string address;
+        public string Address
+        {
+            get => address;
+            set => SetProperty(ref address, value);
+        }
+
+        private string sendPort;
+        public string SendPort
+        {
+            get => sendPort;
+            set => SetProperty(ref sendPort, value);
+        }
+
+        private string recvPort;
+        public string RecvPort
+        {
+            get => recvPort;
+            set => SetProperty(ref recvPort, value);
+        }
+
+        public ICommand StartCommand { get; set; }
+        private void Start(AdonisWindow current)
+        {
+            bool result = true;
+
+            try
+            {
+                if (serverMode)
+                {
+                    server = Server.Instance;
+                    result = server.Init(int.Parse(RecvPort));
+                    if (result) server.Run();
+                }
+                else
+                {
+                    client = Client.Instance;
+                    result = client.Init(Address, int.Parse(SendPort), UserName);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                _ = MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                result = false;
+            }
+            finally
+            {
+                System.Diagnostics.Debug.WriteLine("Finally");
+
+                if (result)
+                {
+                    MainWindow main = new();
+                    System.Windows.Application.Current.MainWindow = main;
+                    main.Show();
+                    current.Close();
+                }
+            }
         }
     }
 }
