@@ -67,7 +67,11 @@ namespace NetworkProject.ViewModel
                 {
                     server = Server.Instance;
                     result = server.Init(int.Parse(RecvPort));
-                    if (result) server.Run();
+                    
+                    if (result)
+                    {
+                        _ = server.Run();
+                    }
                 }
                 else
                 {
@@ -77,18 +81,25 @@ namespace NetworkProject.ViewModel
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.Message);
                 _ = MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 result = false;
             }
             finally
             {
-                System.Diagnostics.Debug.WriteLine("Finally");
-
                 if (result)
                 {
                     MainWindow main = new();
                     System.Windows.Application.Current.MainWindow = main;
+
+                    if (serverMode)
+                    {
+                        main.Title += "(Server)";
+                    }
+                    else
+                    {
+                        main.Title += $"({UserName})";
+                    }
+
                     main.Show();
                     current.Close();
                 }

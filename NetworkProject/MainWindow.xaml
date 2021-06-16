@@ -7,9 +7,15 @@
         xmlns:vm="clr-namespace:NetworkProject.ViewModel"
         xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
         xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+        xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         x:Name="Main"
-        Title="MainWindow" Height="900" Width="1600" ResizeMode="NoResize">
+        Title="MainWindow" Height="900" Width="1600" ResizeMode="CanMinimize">
+    <Behaviors:Interaction.Triggers>
+        <Behaviors:EventTrigger EventName="Closing">
+            <Behaviors:InvokeCommandAction Command="{Binding CleanUpCommand}" PassEventArgsToCommand="True"/>
+        </Behaviors:EventTrigger>
+    </Behaviors:Interaction.Triggers>
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -42,7 +48,16 @@
                     <GroupBox.Header>
                         <Label Content="현재 접속자"/>
                     </GroupBox.Header>
-                    <ListView/>
+                    <ListBox ItemsSource="{Binding ServerInstance.Users}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Focusable" Value="False"/>
+                                <Setter Property="IsHitTestVisible" Value="False"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
                 </GroupBox>
                 <GroupBox Grid.Row="1">
                     <GroupBox.Header>
@@ -56,7 +71,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0"/>
-                    <Button Grid.Column="1" Content="전송"/>
+                    <Button Grid.Column="1" Content="전송" Command="{Binding SendCommand}"/>
                 </Grid>
             </Grid>
         </Grid>
